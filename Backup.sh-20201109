@@ -28,7 +28,7 @@ the backup_local.conf file in the root directory"
 
 function check_schedule {
        #check to see if the script exists in daily cron directory
-       if [ ! -s "/etc/cron.weekly/make_backup" ]
+       if [ ! -s "/etc/cron.daily/make_backup" ]
        then
                  #copy script to cron.daily dir
                  sudo cp make_backup.sh /etc/cron.daily/make_backup
