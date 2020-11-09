@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-## creates weekly backup of selected directories
+## creates daily backup of selected directories
 #
 
 ## variables
@@ -27,12 +27,12 @@ the backup_local.conf file in the root directory"
 }
 
 function check_schedule {
-       #check to see if the script exists in weekly cron directory
-       if [ ! -s "/etc/cron.weekly/make_backup" ]
+       #check to see if the script exists in daily cron directory
+       if [ ! -s "/etc/cron.daily/make_backup" ]
        then
-                 #copy script to cron.weekly dir
-                 sudo cp make_backup.sh /etc/cron.weekly/make_backup
-                 echo "The backup has been set to run weekly"
+                 #copy script to cron.daily dir
+                 sudo cp make_backup.sh /etc/cron.daily/make_backup
+                 echo "The backup has been set to run daily"
                  echo "The exact run time is in the /etc/crontab file."
                  exit 1
 
@@ -41,9 +41,9 @@ function check_schedule {
 }
 
 function perform_backup {
-        #get backup location
+        #get backup location 
         back_path=$(cat /backup_local.conf)
-        echo "starting backup. . ." > $LOG_LOC
+        echo "starting backup. . ." > $LOG_LOC > folder.tar.gz.gpg        
         #for each dir, archive and compress to backup location
         while read dir_path
         do
@@ -53,7 +53,8 @@ function perform_backup {
                filename=$backup_path$dir_name.tar.gz
                #archive dirs and compress archive
                tar -zcf $filename $dir_path 2>> $LOG_LOC
-
+               #Encryption on the backup (still in the making)
+               tar -cvzf - '/etc/cron.daily/make_backup'| gpg -c > folder.tar.gz.gpg
                #change ownership of  backup files
                chown captain:captain $filename
                echo "Backing up of $dir_name completed." >> $LOG_LOC
