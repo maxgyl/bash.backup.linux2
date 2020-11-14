@@ -1,5 +1,5 @@
 #!/bin/bash
-#	backup-project-alt.sh
+# backup-project-alt.sh
 
 
 # Backup to NFS mount script.
