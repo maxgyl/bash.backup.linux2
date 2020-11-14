@@ -25,7 +25,7 @@ echo
 # Copy script to cron daily
 sudo cp backup-project-alt.sh /etc/cron.daily/backup-project-alt.sh
 
-#	Backup the files with Tar and encrypt with openssl
+# Backup the files with Tar and encrypt with openssl
 tar czf $dest/"$archive_file" "$backup_files" | openssl enc -e -aes256 -out backup_secured.tar.gz
 
 # Print end status msg.
